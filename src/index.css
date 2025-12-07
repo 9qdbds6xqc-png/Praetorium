@@ -120,6 +120,12 @@ All colors MUST be HSL.
   }
 }
 
+@layer components {
+  .fsm-container {
+    @apply max-w-6xl mx-auto px-4 sm:px-6 lg:px-8;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
