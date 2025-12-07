@@ -1,5 +1,7 @@
+import { summarizeText } from "./textSummary";
+
 const PROXY_BASE = "https://r.jina.ai";
-const MAX_PAGES = 15;
+const MAX_PAGES = 500;
 
 const ensureProtocol = (value: string): string => {
   if (!value) throw new Error("Bitte gib eine gültige URL ein.");
@@ -47,6 +49,35 @@ const extractSubLinks = (html: string, baseUrl: URL): string[] => {
   return Array.from(links);
 };
 
+const fetchSitemapLinks = async (baseUrl: URL): Promise<string[]> => {
+  try {
+    const sitemapUrl = new URL("/sitemap.xml", baseUrl.origin).toString();
+    const response = await fetch(sitemapUrl);
+    if (!response.ok) return [];
+
+    const xml = await response.text();
+    const locRegex = /<loc>(.*?)<\/loc>/gi;
+    const links = new Set<string>();
+    let match: RegExpExecArray | null;
+
+    while ((match = locRegex.exec(xml)) !== null) {
+      try {
+        const loc = match[1].trim();
+        const absoluteUrl = new URL(loc, baseUrl).toString();
+        if (new URL(absoluteUrl).hostname === baseUrl.hostname) {
+          links.add(absoluteUrl);
+        }
+      } catch {
+        // ignore malformed urls
+      }
+    }
+
+    return Array.from(links);
+  } catch {
+    return [];
+  }
+};
+
 export interface SiteContentResult {
   url: string;
   text: string;
@@ -56,7 +87,9 @@ export const fetchWebsiteContent = async (rawUrl: string): Promise<SiteContentRe
   try {
     const normalizedUrl = ensureProtocol(rawUrl);
     const baseUrl = new URL(normalizedUrl);
-    const queue: string[] = [baseUrl.toString()];
+    const sitemapLinks = await fetchSitemapLinks(baseUrl);
+    const seedLinks = [baseUrl.toString(), ...sitemapLinks];
+    const queue: string[] = Array.from(new Set(seedLinks));
     const visited = new Set<string>();
     const collected: Array<{ link: string; content: string }> = [];
 
@@ -85,7 +118,10 @@ export const fetchWebsiteContent = async (rawUrl: string): Promise<SiteContentRe
     }
 
     const combinedText = collected
-      .map((entry) => `\n\n---\n\nURL: ${entry.link}\n${entry.content}`)
+      .map((entry) => {
+        const summarized = summarizeText(entry.content);
+        return `\n\n---\n\nURL: ${entry.link}\n${summarized}`;
+      })
       .join("");
 
     return { url: baseUrl.toString(), text: combinedText };

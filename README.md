@@ -73,7 +73,7 @@ The custom domain `www.praetorium.tech` is configured via the `CNAME` file in th
 ## Conversational Assistant
 
 - `/` keeps the minimalist landing page and links to the chat.
-- `/chat` now lets the user paste any public website link; the assistant fetches the page text (via the KI-Vergabe backend) and answers strictly from that content.
+- `/chat` now lets the user paste any public website link; der Crawler lädt automatisch alle intern verlinkten Seiten (inkl. `sitemap.xml`, falls vorhanden) und fasst die Inhalte zusammen. Antworten basieren ausschließlich auf diesem Material.
 
 The backlog endpoint is still shared with the KI-Vergabe deployment, so conversations continue to be stored centrally. No upload/admin screen exists in this repo.
 
