@@ -46,16 +46,39 @@ const Questions = () => {
           </div>
 
           {/* Title */}
-          <h1 className="mb-6 text-4xl font-light tracking-tight sm:text-5xl md:text-6xl text-center bg-gradient-to-b from-foreground to-foreground/70 bg-clip-text text-transparent">
-            Praetorium KI-Assistent
+          <h1 className="mb-6 text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl text-center bg-gradient-to-b from-foreground to-foreground/60 bg-clip-text text-transparent">
+            Website-KI für deinen Content
           </h1>
 
           {/* Description */}
-          <p className="text-muted-foreground text-center max-w-3xl text-lg leading-relaxed font-light">
-            Teile einfach den Link deiner Unternehmenswebsite – der Assistent zieht sich den Text
-            automatisch und beantwortet ausschließlich Fragen auf Basis dieser Inhalte. Alles andere
-            wird höflich abgelehnt.
-          </p>
+          <div className="text-muted-foreground text-center max-w-3xl text-lg leading-relaxed font-light space-y-4">
+            <p>
+              Unser Chat liest ausschließlich das, was du verlinkst – inkl. der wichtigsten
+              Unterseiten, die wir automatisch mit scannen. Kein Halluzinieren, keine Fremdquellen.
+              Perfekt, um Produktseiten, Pricing oder Support-Artikel in Sekunden gesprächsbereit zu
+              machen.
+            </p>
+            <ul className="grid gap-3 text-sm sm:text-base text-left sm:text-center sm:grid-cols-3 font-normal">
+              <li className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <span className="block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">
+                  Schritt 1
+                </span>
+                Link einfügen
+              </li>
+              <li className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <span className="block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">
+                  Schritt 2
+                </span>
+                Inhalte werden gelesen
+              </li>
+              <li className="rounded-2xl border border-white/10 bg-white/5 px-4 py-3">
+                <span className="block text-xs uppercase tracking-[0.2em] text-muted-foreground mb-1">
+                  Schritt 3
+                </span>
+                Stelle deine Fragen
+              </li>
+            </ul>
+          </div>
         </div>
 
         {/* Chat Interface */}

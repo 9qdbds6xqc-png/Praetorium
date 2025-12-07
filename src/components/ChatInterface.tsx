@@ -259,13 +259,15 @@ export const ChatInterface = () => {
               {siteStatus === "ready" && siteUrl && (
                 <>
                   <span className="h-2 w-2 rounded-full bg-emerald-400" />
-                  Inhalte geladen für <span className="font-medium text-foreground">{siteUrl}</span>
+                  Inhalte geladen für{" "}
+                  <span className="font-medium text-foreground">{siteUrl}</span> (inkl. wichtiger
+                  Unterseiten)
                 </>
               )}
               {siteStatus === "loading" && (
                 <>
                   <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
-                  Inhalte werden analysiert …
+                  Inhalte und Unterseiten werden analysiert …
                 </>
               )}
               {siteStatus === "error" && (
