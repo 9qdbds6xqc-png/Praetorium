@@ -24,8 +24,9 @@ const delay = (ms: number) => new Promise(resolve => setTimeout(resolve, ms));
  */
 export async function askQuestion(
   question: string,
-  pdfContext: string,
-  chatHistory: ChatMessage[] = []
+  websiteContext: string,
+  chatHistory: ChatMessage[] = [],
+  sourceUrl?: string
 ): Promise<AnswerResult> {
   try {
     const apiKey = import.meta.env.VITE_OPENAI_API_KEY;
@@ -40,17 +41,18 @@ export async function askQuestion(
       question.toLowerCase().includes(keyword)
     );
 
-    // System prompt - STRICT: Only answer from PDF content
-    const systemPrompt = `You are a helpful assistant answering questions STRICTLY based on the provided PDF documentation.
+    // System prompt - STRICT: Only answer from provided website content
+    const urlDescriptor = sourceUrl ? `Website URL: ${sourceUrl}` : "Website URL: nicht angegeben";
+    const systemPrompt = `You are a precise assistant that answers questions STRICTLY based on the provided website content.
+
+${urlDescriptor}
 
 CRITICAL RULES:
-1. ONLY answer questions that can be answered using information from the provided PDF content.
-2. If the question cannot be answered from the PDF, you MUST respond with: "Diese Frage kann ich nicht basierend auf dem bereitgestellten Dokument beantworten. Bitte kontaktieren Sie uns direkt für weitere Informationen."
-3. For pricing questions, you MUST respond: "Preisinformationen können Sie über unser Kontaktformular anfordern."
-4. Do NOT make up information or use general knowledge.
-5. Only use facts explicitly stated in the PDF.
-6. Keep answers clear, professional, and under 300 words.
-7. Respond in the same language as the question (English or German).`;
+1. ONLY use facts from the provided website content.
+2. If the user asks anything outside of this content, respond with: "Ich kann nur Informationen aus der angegebenen Website wiedergeben."
+3. Do NOT invent or infer details that are not explicitly present in the website text.
+4. Keep answers clear, structured, and under 300 words while mirroring the user's language (German/English).
+5. If pricing is requested and the website text does not include pricing, answer with: "Preisinformationen können Sie über unser Kontaktformular anfordern."`;
 
     // Build messages array
     const messages: Array<{ role: string; content: string }> = [
@@ -69,7 +71,7 @@ CRITICAL RULES:
     // Add current question with context
     messages.push({
       role: 'user',
-      content: `Documentation context:\n\n${pdfContext}\n\n\nQuestion: ${question}`,
+      content: `Website content:\n\n${websiteContext}\n\n\nQuestion: ${question}`,
     });
 
     // Rate limiting: Wait if requests are too frequent

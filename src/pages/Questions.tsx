@@ -52,10 +52,9 @@ const Questions = () => {
 
           {/* Description */}
           <p className="text-muted-foreground text-center max-w-3xl text-lg leading-relaxed font-light">
-            Stellen Sie technische oder organisatorische Fragen basierend auf Ihren Dokumenten. 
-            <span className="block mt-3 text-base">
-              Sobald Sie Kontakt aufnehmen möchten, teilen Sie dies im Chat mit – unser Team erhält automatisch den Gesprächskontext und meldet sich bei Ihnen.
-            </span>
+            Teile einfach den Link deiner Unternehmenswebsite – der Assistent zieht sich den Text
+            automatisch und beantwortet ausschließlich Fragen auf Basis dieser Inhalte. Alles andere
+            wird höflich abgelehnt.
           </p>
         </div>
 

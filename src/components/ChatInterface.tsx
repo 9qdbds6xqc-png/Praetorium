@@ -1,14 +1,15 @@
 import { useState, useRef, useEffect } from "react";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { ChatMessage } from "./ChatMessage";
-import { Send, Loader2 } from "lucide-react";
+import { Send, Loader2, Globe, Link2 } from "lucide-react";
 import { askQuestion, preparePDFContext } from "@/lib/openai";
 import { findRelevantSections } from "@/lib/pdfExtractor";
 import { PricingRequestDialog } from "./PricingRequestDialog";
 import { saveToBacklog } from "@/lib/backlog";
 import { toast } from "@/hooks/use-toast";
-import { fetchCompanyDocuments } from "@/lib/companyDocs";
+import { fetchWebsiteContent } from "@/lib/siteContent";
 
 interface Message {
   id: string;
@@ -17,75 +18,30 @@ interface Message {
   isLoading?: boolean;
 }
 
-interface ChatInterfaceProps {
-  pdfContext?: string;
-}
-
-export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfaceProps) => {
+export const ChatInterface = () => {
   const [messages, setMessages] = useState<Message[]>([
     {
       id: "1",
       role: "assistant",
-      content: "Einen Moment bitte, ich lade gerade die hinterlegten Dokumente...",
+      content: "Füge den Link deiner Website hinzu, damit ich ausschließlich daraus antworte.",
     },
   ]);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  const [pdfContext, setPdfContext] = useState<string>(initialPDFContext || "");
-  const [pdfFileNames, setPdfFileNames] = useState<string[]>([]);
+  const [siteInput, setSiteInput] = useState("");
+  const [siteContext, setSiteContext] = useState<string>("");
+  const [siteUrl, setSiteUrl] = useState<string | null>(null);
+  const [siteStatus, setSiteStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [siteError, setSiteError] = useState<string | null>(null);
   const [showPricingDialog, setShowPricingDialog] = useState(false);
   const [pendingPricingQuestion, setPendingPricingQuestion] = useState<string>("");
-  const [companyDisplayName, setCompanyDisplayName] = useState<string | null>(null);
-  const [isLoadingDocs, setIsLoadingDocs] = useState(true);
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
-  const defaultCompanyId = import.meta.env.VITE_DEFAULT_COMPANY_ID || "praetorium";
 
-  // Load PDFs for default company
-  useEffect(() => {
-    setIsLoadingDocs(true);
-    fetchCompanyDocuments(defaultCompanyId)
-      .then((data) => {
-        setPdfContext(data.combinedText);
-        setPdfFileNames(data.fileNames || []);
-        setCompanyDisplayName(data.displayName);
-      })
-      .catch((error) => {
-        console.error("Company doc fetch error:", error);
-        toast({
-          title: "Dokumente konnten nicht geladen werden",
-          description:
-            error instanceof Error
-              ? error.message
-              : "Bitte wende dich an den Support.",
-          variant: "destructive",
-        });
-        setPdfContext("");
-        setPdfFileNames([]);
-        setCompanyDisplayName(null);
-      })
-      .finally(() => setIsLoadingDocs(false));
-  }, [defaultCompanyId, toast]);
-
-  // Update welcome message when PDF is loaded
-  useEffect(() => {
-    if (pdfContext && pdfContext.trim().length > 0) {
-      setMessages([
-        {
-          id: "1",
-          role: "assistant",
-          content: `PDF(s) erfolgreich geladen! Ich kann jetzt Fragen basierend auf den hochgeladenen Dokumenten beantworten. Was möchten Sie wissen?`,
-        },
-      ]);
-    }
-  }, [pdfContext, pdfFileNames]);
-
-  // Auto-scroll to bottom when new messages arrive
   useEffect(() => {
     messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
   }, [messages]);
 
-  // Auto-resize textarea
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
@@ -93,15 +49,61 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
     }
   }, [input]);
 
+  const resetMessages = (url: string) => {
+    setMessages([
+      {
+        id: "1",
+        role: "assistant",
+        content: `Ich habe die Inhalte von ${url} geladen. Was möchtest du darüber wissen?`,
+      },
+    ]);
+  };
+
+  const handleLoadSite = async () => {
+    if (!siteInput.trim()) {
+      toast({
+        title: "Link erforderlich",
+        description: "Bitte gib die URL einer Website ein.",
+        variant: "destructive",
+      });
+      return;
+    }
+
+    setSiteStatus("loading");
+    setSiteError(null);
+
+    try {
+      const { url, text } = await fetchWebsiteContent(siteInput.trim());
+      setSiteUrl(url);
+      setSiteContext(text);
+      setSiteInput(url);
+      setSiteStatus("ready");
+      resetMessages(url);
+      toast({
+        title: "Website geladen",
+        description: "Du kannst jetzt Fragen zur verlinkten Seite stellen.",
+      });
+    } catch (error) {
+      console.error("Site load error:", error);
+      const message =
+        error instanceof Error ? error.message : "Die Website konnte nicht geladen werden.";
+      setSiteStatus("error");
+      setSiteError(message);
+      toast({
+        title: "Fehler beim Laden",
+        description: message,
+        variant: "destructive",
+      });
+    }
+  };
 
   const handleSend = async () => {
     if (!input.trim() || isLoading) return;
 
-    // Check if PDF is loaded
-    if (!pdfContext || pdfContext.trim().length === 0) {
+    if (!siteContext || siteContext.trim().length === 0) {
       toast({
-        title: "Kein PDF hochgeladen",
-        description: "Bitte laden Sie zuerst ein PDF-Dokument hoch, bevor Sie Fragen stellen.",
+        title: "Keine Website geladen",
+        description: "Bitte gib zuerst eine Website an.",
         variant: "destructive",
       });
       return;
@@ -117,7 +119,6 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
     setInput("");
     setIsLoading(true);
 
-    // Add loading message
     const loadingMessageId = (Date.now() + 1).toString();
     setMessages((prev) => [
       ...prev,
@@ -130,32 +131,31 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
     ]);
 
     try {
-      // Get relevant PDF context for this question
-      const relevantContext = findRelevantSections(pdfContext, userMessage.content);
+      const relevantContext = findRelevantSections(siteContext, userMessage.content);
+      const context =
+        relevantContext && relevantContext.length > 50
+          ? relevantContext
+          : preparePDFContext(siteContext || "", 4000);
 
-      // Prepare full context (use relevant sections if found, otherwise use all)
-      const context = relevantContext && relevantContext.length > 50 
-        ? relevantContext 
-        : preparePDFContext(pdfContext || "", 4000);
-      
-      // Get chat history for context
       const chatHistory = messages
-        .filter(msg => msg.role !== "assistant" || !msg.isLoading)
+        .filter((msg) => msg.role !== "assistant" || !msg.isLoading)
         .map((msg) => ({
           role: msg.role,
           content: msg.content,
         }));
 
-      // Ask OpenAI
-      const result = await askQuestion(userMessage.content, context, chatHistory);
+      const result = await askQuestion(
+        userMessage.content,
+        context,
+        chatHistory,
+        siteUrl || undefined
+      );
 
-      // Check if it's a pricing question
       if (result.isPricingQuestion) {
         setPendingPricingQuestion(userMessage.content);
         setShowPricingDialog(true);
       }
 
-      // Update loading message with answer
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === loadingMessageId
@@ -169,22 +169,15 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
         )
       );
 
-      // Save to backlog (local + database)
-      await saveToBacklog(
-        userMessage.content,
-        result.answer,
-        pdfFileNames.join(', ') || undefined,
-        result.isPricingQuestion
-      );
+      await saveToBacklog(userMessage.content, result.answer, siteUrl || undefined, result.isPricingQuestion);
     } catch (error) {
       console.error("Error getting answer:", error);
-      
-      // Create error message
-      const errorMessage = error instanceof Error
-        ? `Fehler: ${error.message}. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.`
-        : "Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut oder kontaktieren Sie uns direkt.";
 
-      // Update loading message with error
+      const errorMessage =
+        error instanceof Error
+          ? `Fehler: ${error.message}. Bitte versuche es erneut oder kontaktiere uns direkt.`
+          : "Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuche es erneut oder kontaktiere uns direkt.";
+
       setMessages((prev) =>
         prev.map((msg) =>
           msg.id === loadingMessageId
@@ -198,18 +191,11 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
         )
       );
 
-      // Save error to backlog as well
-      await saveToBacklog(
-        userMessage.content,
-        errorMessage,
-        pdfFileNames.join(', ') || undefined,
-        false,
-        errorMessage
-      );
+      await saveToBacklog(userMessage.content, errorMessage, siteUrl || undefined, false, errorMessage);
 
       toast({
         title: "Fehler",
-        description: "Die Anfrage konnte nicht verarbeitet werden. Bitte versuchen Sie es erneut.",
+        description: "Die Anfrage konnte nicht verarbeitet werden. Bitte versuche es erneut.",
         variant: "destructive",
       });
     } finally {
@@ -226,40 +212,79 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
 
   return (
     <>
-      <div className="flex flex-col h-full max-h-[700px] border border-border/50 rounded-xl bg-card/50 backdrop-blur-sm shadow-lg shadow-black/5">
-        {/* PDF Status Section */}
-        {pdfFileNames.length > 0 && (
-          <div className="border-b border-border p-4 bg-muted/30">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-2">
-                <span className="text-sm text-muted-foreground">
-                  Aktive Dokumente:
-                </span>
-                <span className="text-sm font-medium">
-                  {companyDisplayName || "Praetorium"}
-                </span>
-              </div>
+      <div className="flex flex-col h-full border border-white/10 rounded-[28px] bg-white/5 dark:bg-[#05060a]/60 backdrop-blur-xl shadow-[0_30px_80px_rgba(15,15,35,0.35)]">
+        <div className="border-b border-white/10 p-6 space-y-4 bg-gradient-to-br from-white/10 via-transparent to-transparent">
+          <div className="flex items-center gap-3">
+            <div className="h-12 w-12 rounded-2xl bg-primary/15 flex items-center justify-center text-primary">
+              <Globe className="h-5 w-5" />
             </div>
-          </div>
-        )}
-
-        {pdfFileNames.length === 0 && (
-          <div className="border-b border-border p-4 bg-muted/30">
-            <div className="flex items-center justify-between">
+            <div>
+              <p className="text-sm font-semibold tracking-[0.2em] uppercase text-muted-foreground">
+                Schritt 1
+              </p>
+              <h2 className="text-lg font-semibold">Website-Link einfügen</h2>
               <p className="text-sm text-muted-foreground">
-                {isLoadingDocs ? "Dokumente werden geladen..." : "Dokumente konnten nicht geladen werden"}
+                Der Assistent darf ausschließlich Inhalte dieser Seite verwenden.
               </p>
             </div>
           </div>
-        )}
 
-        {/* Messages area */}
-        <div className="flex-1 overflow-y-auto p-4 space-y-4">
-          {isLoadingDocs && (
-            <div className="text-center text-sm text-muted-foreground">
-              Dokumente werden geladen...
+          <div className="flex flex-col gap-3">
+            <div className="flex flex-col md:flex-row gap-3">
+              <div className="flex-1 relative">
+                <Input
+                  placeholder="https://example.com"
+                  value={siteInput}
+                  onChange={(e) => setSiteInput(e.target.value)}
+                  className="pl-11 h-12 text-base rounded-2xl bg-background/80 border-border/60 focus-visible:ring-primary/40"
+                />
+                <Link2 className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+              </div>
+              <Button
+                onClick={handleLoadSite}
+                disabled={siteStatus === "loading"}
+                className="h-12 rounded-2xl px-6 shadow-lg shadow-primary/20"
+              >
+                {siteStatus === "loading" ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Lädt
+                  </>
+                ) : (
+                  "Inhalt laden"
+                )}
+              </Button>
             </div>
-          )}
+            <div className="text-sm text-muted-foreground flex items-center gap-2">
+              {siteStatus === "ready" && siteUrl && (
+                <>
+                  <span className="h-2 w-2 rounded-full bg-emerald-400" />
+                  Inhalte geladen für <span className="font-medium text-foreground">{siteUrl}</span>
+                </>
+              )}
+              {siteStatus === "loading" && (
+                <>
+                  <span className="h-2 w-2 rounded-full bg-amber-400 animate-pulse" />
+                  Inhalte werden analysiert …
+                </>
+              )}
+              {siteStatus === "error" && (
+                <>
+                  <span className="h-2 w-2 rounded-full bg-red-500" />
+                  {siteError}
+                </>
+              )}
+              {siteStatus === "idle" && (
+                <>
+                  <span className="h-2 w-2 rounded-full bg-muted-foreground/50" />
+                  Füge einen Link hinzu, damit ich nur daraus zitiere.
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto p-4 space-y-4">
           {messages.map((message) => (
             <ChatMessage
               key={message.id}
@@ -271,8 +296,7 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
           <div ref={messagesEndRef} />
         </div>
 
-        {/* Input area */}
-        <div className="border-t border-border p-4">
+        <div className="border-t border-border/40 p-4">
           <div className="flex gap-2">
             <Textarea
               ref={textareaRef}
@@ -280,18 +304,18 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
               onChange={(e) => setInput(e.target.value)}
               onKeyDown={handleKeyPress}
               placeholder={
-                pdfContext && pdfContext.trim().length > 0
-                  ? "Stellen Sie eine Frage zu den hinterlegten Dokumenten..."
-                  : "Dokumente werden geladen..."
+                siteContext && siteContext.trim().length > 0
+                  ? "Stelle deine Frage zur geladenen Website..."
+                  : "Bitte lade zuerst eine Website."
               }
-              className="min-h-[60px] max-h-[200px] resize-none"
-              disabled={isLoading || !pdfContext || pdfContext.trim().length === 0}
+              className="min-h-[60px] max-h-[200px] resize-none rounded-2xl bg-background/70 border-border/60"
+              disabled={isLoading || !siteContext || siteContext.trim().length === 0}
             />
             <Button
               onClick={handleSend}
-              disabled={!input.trim() || isLoading || !pdfContext || pdfContext.trim().length === 0}
+              disabled={!input.trim() || isLoading || !siteContext || siteContext.trim().length === 0}
               size="icon"
-              className="h-[60px] w-[60px] flex-shrink-0"
+              className="h-[60px] w-[60px] flex-shrink-0 rounded-2xl"
             >
               {isLoading ? (
                 <Loader2 className="h-5 w-5 animate-spin" />
@@ -306,7 +330,6 @@ export const ChatInterface = ({ pdfContext: initialPDFContext }: ChatInterfacePr
         </div>
       </div>
 
-      {/* Pricing Request Dialog */}
       <PricingRequestDialog
         open={showPricingDialog}
         onOpenChange={setShowPricingDialog}

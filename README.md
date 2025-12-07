@@ -73,9 +73,9 @@ The custom domain `www.praetorium.tech` is configured via the `CNAME` file in th
 ## Conversational Assistant
 
 - `/` keeps the minimalist landing page and links to the chat.
-- `/chat` renders the KI-style assistant that answers questions based on the PDFs stored for the **default company**.
+- `/chat` now lets the user paste any public website link; the assistant fetches the page text (via the KI-Vergabe backend) and answers strictly from that content.
 
-There is no admin/upload surface in this project: it simply consumes the existing KI-Vergabe backend (Supabase tables, storage bucket, and serverless APIs). Reuse the exact same environment variables from that project so both deployments talk to the same backend.
+The backlog endpoint is still shared with the KI-Vergabe deployment, so conversations continue to be stored centrally. No upload/admin screen exists in this repo.
 
 ### Environment Variables
 
@@ -86,8 +86,7 @@ Copy `.env.example` to `.env` and (re)use the KI-Vergabe values:
 | `VITE_OPENAI_API_KEY` | OpenAI key used for the chat completions. | `<same key as KI-Vergabe>` |
 | `VITE_AUTH_API_URL` | Existing password API endpoint. | `https://trafosanf-remake.vercel.app/api/auth` |
 | `VITE_BACKLOG_API_URL` | Endpoint that records conversations. | `https://trafosanf-remake.vercel.app/api/backlog` |
-| `VITE_COMPANY_DOCS_API_URL` | Endpoint that serves the combined PDF text. | `https://trafosanf-remake.vercel.app/api/company-docs` |
+| `VITE_COMPANY_DOCS_API_URL` | Endpoint that proxies website/PDF content. | `https://trafosanf-remake.vercel.app/api/company-docs` |
 | `VITE_ADMIN_TOKEN_SALT` | Same salt as the KI project (used only for compatibility). | `ki-vergabe-admin-token` |
-| `VITE_DEFAULT_COMPANY_ID` | Slug of the company/doc set to load. | `praetorium` (or whatever exists in Supabase) |
-
-With those values in place no additional Supabase setup is required—the assistant reads from the same tables/bucket and continues logging to the existing backlog.
+ 
+With those values in place no additional Supabase setup is required—the assistant relies on the existing KI-Vergabe infrastructure and simply streams user-provided website content through it.
