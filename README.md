@@ -88,5 +88,6 @@ Copy `.env.example` to `.env` and (re)use the KI-Vergabe values:
 | `VITE_BACKLOG_API_URL` | Endpoint that records conversations. | `https://trafosanf-remake.vercel.app/api/backlog` |
 | `VITE_COMPANY_DOCS_API_URL` | Endpoint that proxies website/PDF content. | `https://trafosanf-remake.vercel.app/api/company-docs` |
 | `VITE_ADMIN_TOKEN_SALT` | Same salt as the KI project (used only for compatibility). | `ki-vergabe-admin-token` |
+| `VITE_CHAT_API_URL` | Server-side proxy that talks to OpenAI. | `https://trafosanf-remake.vercel.app/api/openai` |
  
 With those values in place no additional Supabase setup is required—the assistant relies on the existing KI-Vergabe infrastructure and simply streams user-provided website content through it.
