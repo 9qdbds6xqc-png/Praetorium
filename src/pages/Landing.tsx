@@ -83,12 +83,6 @@ const Landing = () => {
           <span className="absolute -bottom-1 left-0 h-px w-0 bg-accent transition-all duration-300 group-hover:w-full" />
         </a>
 
-        <Link
-          to="/chat"
-          className="mt-10 inline-flex items-center rounded-full border border-border px-6 py-2 text-sm font-medium text-foreground transition-colors hover:border-accent hover:bg-accent/5"
-        >
-          Zum Chat
-        </Link>
       </div>
 
       {/* Footer */}
