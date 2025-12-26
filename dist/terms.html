@@ -33,6 +33,13 @@
         --accent: 207 40% 45%;
       }
 
+      :root[data-theme="dark"] {
+        --background: 220 20% 8%;
+        --foreground: 210 20% 92%;
+        --muted-foreground: 210 10% 60%;
+        --accent: 207 40% 45%;
+      }
+
       body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: hsl(var(--background));
@@ -41,6 +48,7 @@
         padding: 24px;
         position: relative;
         overflow-x: hidden;
+        transition: background 0.3s ease, color 0.3s ease;
       }
 
       /* Subtle gradient background */
@@ -51,6 +59,11 @@
         pointer-events: none;
         background: radial-gradient(circle at 50% 50%, hsl(207 40% 15% / 0.15), transparent 50%);
         z-index: 1;
+        transition: background 0.3s ease;
+      }
+
+      :root[data-theme="dark"] body::before {
+        background: radial-gradient(circle at 50% 50%, hsl(207 40% 25% / 0.3), transparent 50%);
       }
 
       .back-link {
@@ -76,6 +89,67 @@
       .back-link svg {
         width: 16px;
         height: 16px;
+      }
+
+      /* Theme toggle button */
+      .theme-toggle {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 20;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid hsl(var(--muted-foreground) / 0.2);
+        background: hsl(var(--background) / 0.8);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: hsl(var(--muted-foreground));
+        animation: fadeInDelay 1.2s ease-out 0.3s forwards;
+        opacity: 0;
+      }
+
+      .theme-toggle:hover {
+        border-color: hsl(var(--muted-foreground) / 0.4);
+        background: hsl(var(--background) / 0.95);
+        color: hsl(var(--foreground));
+        transform: scale(1.05);
+      }
+
+      .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .theme-toggle .sun-icon {
+        position: absolute;
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+
+      .theme-toggle .moon-icon {
+        position: absolute;
+        opacity: 0;
+        transform: rotate(90deg) scale(0);
+      }
+
+      :root[data-theme="dark"] .theme-toggle .sun-icon {
+        opacity: 0;
+        transform: rotate(90deg) scale(0);
+      }
+
+      :root[data-theme="dark"] .theme-toggle .moon-icon {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
       }
 
       main {
@@ -125,6 +199,18 @@
       .section p {
         color: hsl(var(--muted-foreground));
         line-height: 1.75;
+        margin-bottom: 12px;
+      }
+
+      .section ul {
+        color: hsl(var(--muted-foreground));
+        line-height: 1.75;
+        margin-left: 24px;
+        margin-bottom: 12px;
+      }
+
+      .section li {
+        margin-bottom: 8px;
       }
 
       @keyframes fadeIn {
@@ -157,6 +243,13 @@
           top: 20px;
         }
 
+        .theme-toggle {
+          top: 20px;
+          right: 20px;
+          width: 36px;
+          height: 36px;
+        }
+
         main {
           padding-top: 60px;
         }
@@ -168,6 +261,16 @@
     </style>
   </head>
   <body>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+      </svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
     <a href="/" class="back-link" onclick="trackLinkClick('back_to_home')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -177,47 +280,122 @@
 
     <main>
       <h1>Terms of Service</h1>
-      <p class="last-updated">Last updated: January 2026</p>
+      <p class="last-updated">Last updated: January 1, 2026</p>
 
       <div class="sections">
         <div class="section">
-          <h2>1. Acceptance of Terms</h2>
-          <p>By accessing and using our services, you accept and agree to be bound by the terms and provision of this agreement.</p>
+          <p>These Terms of Service ("Terms") govern your access to and use of the website located at <a href="https://www.praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">https://www.praetorium.tech</a> (the "Website"), operated by Praetorium GmbH ("Praetorium", "we", "us", "our").</p>
+          <p>By accessing or using the Website, you agree to these Terms. If you do not agree, do not use the Website.</p>
         </div>
 
         <div class="section">
-          <h2>2. Use License</h2>
-          <p>Permission is granted to temporarily access our services for personal, non-commercial transitory viewing only.</p>
+          <h2>1. Scope of the Website</h2>
+          <p><strong>1.1</strong> The Website currently provides information about Praetorium and a means to contact us (for example, via email).</p>
+          <p><strong>1.2</strong> Any future products, services, portals, pilots, or offerings that require registration, payment, or separate agreements may be governed by additional terms, order forms, or contracts. Where applicable, those documents will control for the relevant services.</p>
         </div>
 
         <div class="section">
-          <h2>3. Disclaimer</h2>
-          <p>The materials on our service are provided on an 'as is' basis. We make no warranties, expressed or implied, and hereby disclaim all other warranties.</p>
+          <h2>2. Eligibility and B2B Use</h2>
+          <p><strong>2.1</strong> The Website is intended for business users. If you access the Website on behalf of an organization, you represent that you have authority to bind that organization to these Terms.</p>
+          <p><strong>2.2</strong> If local law restricts you from accessing the Website, you may not use it.</p>
         </div>
 
         <div class="section">
-          <h2>4. Limitations</h2>
-          <p>In no event shall PRAETORIUM or its suppliers be liable for any damages arising out of the use or inability to use our services.</p>
+          <h2>3. Acceptable Use</h2>
+          <p>You agree not to:</p>
+          <ul>
+            <li>use the Website in any way that violates applicable law or regulation;</li>
+            <li>probe, scan, or test the vulnerability of any system or network (except where expressly permitted in writing by us);</li>
+            <li>interfere with or disrupt the integrity or performance of the Website;</li>
+            <li>attempt to gain unauthorized access to any accounts, systems, or networks;</li>
+            <li>scrape or harvest content at scale, or use automated means to access the Website except as permitted by robots.txt (if present) or our prior written consent;</li>
+            <li>upload, transmit, or otherwise distribute malware or harmful code.</li>
+          </ul>
         </div>
 
         <div class="section">
-          <h2>5. Revisions</h2>
-          <p>We may revise these terms of service at any time without notice. By using this service you are agreeing to be bound by the current version of these terms.</p>
+          <h2>4. Intellectual Property</h2>
+          <p><strong>4.1</strong> The Website and its content (including text, logos, visuals, and design) are owned by or licensed to Praetorium and are protected by intellectual property laws.</p>
+          <p><strong>4.2</strong> Subject to these Terms, we grant you a limited, non-exclusive, non-transferable, revocable license to access and view the Website for your internal business purposes.</p>
+          <p><strong>4.3</strong> You may not copy, modify, distribute, sell, lease, or create derivative works from the Website content, except where explicitly permitted by mandatory law or with our prior written permission.</p>
         </div>
 
         <div class="section">
-          <h2>6. Governing Law</h2>
-          <p>These terms and conditions are governed by and construed in accordance with applicable laws and you irrevocably submit to the exclusive jurisdiction of the courts.</p>
+          <h2>5. Third-Party Links</h2>
+          <p>The Website may contain links to third-party websites or services. We do not control and are not responsible for third-party content, policies, or practices. Your use of third-party services is at your own risk.</p>
         </div>
 
         <div class="section">
-          <h2>7. Contact</h2>
-          <p>If you have any questions about these Terms, please contact us at contact@praetorium.tech</p>
+          <h2>6. No Professional Advice</h2>
+          <p>Any information on the Website is provided for general informational purposes only and does not constitute legal, compliance, export-control, procurement, security, or other professional advice. You should obtain appropriate professional advice for your specific situation.</p>
+        </div>
+
+        <div class="section">
+          <h2>7. Disclaimer of Warranties</h2>
+          <p>THE WEBSITE IS PROVIDED "AS IS" AND "AS AVAILABLE". TO THE MAXIMUM EXTENT PERMITTED BY LAW, WE DISCLAIM ALL WARRANTIES, WHETHER EXPRESS, IMPLIED, OR STATUTORY, INCLUDING IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, AND NON-INFRINGEMENT. We do not warrant that the Website will be uninterrupted, error-free, or secure.</p>
+        </div>
+
+        <div class="section">
+          <h2>8. Limitation of Liability</h2>
+          <p>TO THE MAXIMUM EXTENT PERMITTED BY LAW:</p>
+          <p>PRAETORIUM SHALL NOT BE LIABLE FOR INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL, OR PUNITIVE DAMAGES, OR FOR ANY LOSS OF PROFITS, REVENUE, DATA, OR GOODWILL, ARISING OUT OF OR RELATED TO YOUR USE OF THE WEBSITE.</p>
+          <p>PRAETORIUM'S TOTAL LIABILITY FOR ANY CLAIM ARISING OUT OF OR RELATING TO THE WEBSITE SHALL NOT EXCEED EUR 100, UNLESS MANDATORY LAW REQUIRES OTHERWISE.</p>
+          <p>Nothing in these Terms limits liability for intent, gross negligence, or other liability that cannot be excluded under applicable law.</p>
+        </div>
+
+        <div class="section">
+          <h2>9. Indemnity (Business Users)</h2>
+          <p>If you use the Website on behalf of a business, you agree to indemnify and hold harmless Praetorium from claims and losses arising out of your unlawful use of the Website or your violation of these Terms, to the extent permitted by law.</p>
+        </div>
+
+        <div class="section">
+          <h2>10. Changes to the Website or Terms</h2>
+          <p>We may modify the Website or these Terms from time to time. The "Last updated" date indicates when changes were made. Continued use of the Website after changes become effective constitutes acceptance of the updated Terms.</p>
+        </div>
+
+        <div class="section">
+          <h2>11. Governing Law and Venue</h2>
+          <p>These Terms are governed by the laws of Germany, excluding conflict-of-law rules. Exclusive venue for disputes shall be Berlin, Germany, unless mandatory law provides otherwise.</p>
+        </div>
+
+        <div class="section">
+          <h2>12. Contact</h2>
+          <p>Praetorium GmbH<br>
+          [ADDRESS]<br>
+          Email: <a href="mailto:contact@praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">contact@praetorium.tech</a></p>
         </div>
       </div>
     </main>
 
     <script>
+      // Theme management
+      function getTheme() {
+        return localStorage.getItem('theme') || 'light';
+      }
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        // Track theme change in GA4
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'theme_change', {
+            event_category: 'preference',
+            event_label: theme,
+            value: theme === 'dark' ? 1 : 0
+          });
+        }
+      }
+
+      function toggleTheme() {
+        const currentTheme = getTheme();
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      }
+
+      // Initialize theme on page load
+      setTheme(getTheme());
+
       // GA4 tracking functions
       function trackLinkClick(linkName) {
         if (typeof gtag !== 'undefined') {
@@ -241,4 +419,3 @@
     </script>
   </body>
 </html>
-

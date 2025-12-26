@@ -10,6 +10,10 @@
     {
       "source": "/terms",
       "destination": "/terms.html"
+    },
+    {
+      "source": "/impressum",
+      "destination": "/impressum.html"
     }
   ]
 }

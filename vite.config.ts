@@ -9,7 +9,8 @@ export default defineConfig({
       input: {
         main: './index.html',
         privacy: './privacy.html',
-        terms: './terms.html'
+        terms: './terms.html',
+        impressum: './impressum.html'
       }
     }
   }

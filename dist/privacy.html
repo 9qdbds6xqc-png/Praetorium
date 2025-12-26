@@ -33,6 +33,13 @@
         --accent: 207 40% 45%;
       }
 
+      :root[data-theme="dark"] {
+        --background: 220 20% 8%;
+        --foreground: 210 20% 92%;
+        --muted-foreground: 210 10% 60%;
+        --accent: 207 40% 45%;
+      }
+
       body {
         font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
         background: hsl(var(--background));
@@ -41,6 +48,7 @@
         padding: 24px;
         position: relative;
         overflow-x: hidden;
+        transition: background 0.3s ease, color 0.3s ease;
       }
 
       /* Subtle gradient background */
@@ -51,6 +59,11 @@
         pointer-events: none;
         background: radial-gradient(circle at 50% 50%, hsl(207 40% 15% / 0.15), transparent 50%);
         z-index: 1;
+        transition: background 0.3s ease;
+      }
+
+      :root[data-theme="dark"] body::before {
+        background: radial-gradient(circle at 50% 50%, hsl(207 40% 25% / 0.3), transparent 50%);
       }
 
       .back-link {
@@ -76,6 +89,67 @@
       .back-link svg {
         width: 16px;
         height: 16px;
+      }
+
+      /* Theme toggle button */
+      .theme-toggle {
+        position: fixed;
+        top: 24px;
+        right: 24px;
+        z-index: 20;
+        width: 40px;
+        height: 40px;
+        border-radius: 8px;
+        border: 1px solid hsl(var(--muted-foreground) / 0.2);
+        background: hsl(var(--background) / 0.8);
+        backdrop-filter: blur(8px);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        color: hsl(var(--muted-foreground));
+        animation: fadeInDelay 1.2s ease-out 0.3s forwards;
+        opacity: 0;
+      }
+
+      .theme-toggle:hover {
+        border-color: hsl(var(--muted-foreground) / 0.4);
+        background: hsl(var(--background) / 0.95);
+        color: hsl(var(--foreground));
+        transform: scale(1.05);
+      }
+
+      .theme-toggle svg {
+        width: 18px;
+        height: 18px;
+        stroke: currentColor;
+        stroke-width: 1.5;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+        transition: transform 0.3s ease, opacity 0.3s ease;
+      }
+
+      .theme-toggle .sun-icon {
+        position: absolute;
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
+      }
+
+      .theme-toggle .moon-icon {
+        position: absolute;
+        opacity: 0;
+        transform: rotate(90deg) scale(0);
+      }
+
+      :root[data-theme="dark"] .theme-toggle .sun-icon {
+        opacity: 0;
+        transform: rotate(90deg) scale(0);
+      }
+
+      :root[data-theme="dark"] .theme-toggle .moon-icon {
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
       }
 
       main {
@@ -125,6 +199,18 @@
       .section p {
         color: hsl(var(--muted-foreground));
         line-height: 1.75;
+        margin-bottom: 12px;
+      }
+
+      .section ul {
+        color: hsl(var(--muted-foreground));
+        line-height: 1.75;
+        margin-left: 24px;
+        margin-bottom: 12px;
+      }
+
+      .section li {
+        margin-bottom: 8px;
       }
 
       @keyframes fadeIn {
@@ -157,6 +243,13 @@
           top: 20px;
         }
 
+        .theme-toggle {
+          top: 20px;
+          right: 20px;
+          width: 36px;
+          height: 36px;
+        }
+
         main {
           padding-top: 60px;
         }
@@ -168,6 +261,16 @@
     </style>
   </head>
   <body>
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="Toggle dark mode">
+      <svg class="sun-icon" viewBox="0 0 24 24" fill="none">
+        <circle cx="12" cy="12" r="4"/>
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/>
+      </svg>
+      <svg class="moon-icon" viewBox="0 0 24 24" fill="none">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+
     <a href="/" class="back-link" onclick="trackLinkClick('back_to_home')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
         <path d="M19 12H5M12 19l-7-7 7-7"/>
@@ -177,42 +280,148 @@
 
     <main>
       <h1>Privacy Policy</h1>
-      <p class="last-updated">Last updated: January 2026</p>
+      <p class="last-updated">Last updated: January 1, 2026</p>
 
       <div class="sections">
         <div class="section">
-          <h2>1. Information We Collect</h2>
-          <p>We collect information you provide directly to us, including name, email address, and any other information you choose to provide.</p>
+          <p>This Privacy Policy explains how Praetorium GmbH ("Praetorium", "we", "us") processes personal data when you visit <a href="https://www.praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">https://www.praetorium.tech</a> (the "Website") or contact us.</p>
         </div>
 
         <div class="section">
-          <h2>2. How We Use Your Information</h2>
-          <p>We use the information we collect to provide, maintain, and improve our services, to communicate with you, and to protect our users.</p>
+          <h2>1. Controller</h2>
+          <p>Controller (data controller) under the GDPR:</p>
+          <p>Praetorium GmbH<br>
+          [ADDRESS]<br>
+          Email: <a href="mailto:contact@praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">contact@praetorium.tech</a></p>
+          <p>[Registration number / VAT ID]</p>
+          <p>Data protection contact: <a href="mailto:contact@praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">contact@praetorium.tech</a></p>
+          <p>DPO (if applicable): We have not appointed a data protection officer.</p>
         </div>
 
         <div class="section">
-          <h2>3. Information Sharing</h2>
-          <p>We do not share your personal information with third parties except as described in this privacy policy or with your consent.</p>
+          <h2>2. Personal Data We Process</h2>
+          <p><strong>2.1 Website access data (server logs)</strong></p>
+          <p>When you visit the Website, our hosting provider typically processes:</p>
+          <ul>
+            <li>IP address</li>
+            <li>date and time of access</li>
+            <li>requested URL/page</li>
+            <li>browser and device information (user agent)</li>
+            <li>referrer URL</li>
+            <li>status codes and data volume</li>
+          </ul>
+          <p><strong>Purpose:</strong> delivering the Website, ensuring security, preventing abuse, troubleshooting.<br>
+          <strong>Legal basis:</strong> Art. 6(1)(f) GDPR (legitimate interests in operating and securing the Website).</p>
+
+          <p><strong>2.2 Data you provide when contacting us</strong></p>
+          <p>If you contact us (for example via email), we process the information you send, which may include:</p>
+          <ul>
+            <li>name</li>
+            <li>email address</li>
+            <li>company name and role</li>
+            <li>message content and any attachments</li>
+          </ul>
+          <p><strong>Purpose:</strong> responding to inquiries, communicating with you, initiating or managing a business relationship.<br>
+          <strong>Legal basis:</strong> Art. 6(1)(b) GDPR (steps prior to entering a contract) and/or Art. 6(1)(f) GDPR (legitimate interest in handling inquiries).</p>
+
+          <p><strong>2.3 Cookies and similar technologies</strong></p>
+          <p>Status (intended for the current "coming soon" page): We do not use cookies for advertising or cross-site tracking. The Website may use strictly necessary technical storage if required by the platform/hosting to deliver the Website.</p>
+          <p>If you add analytics, marketing tags, embedded media, or A/B testing tools, you must update this section and, where required, implement a compliant consent mechanism (opt-in) under applicable EU rules.</p>
         </div>
 
         <div class="section">
-          <h2>4. Data Security</h2>
-          <p>We take reasonable measures to help protect your personal information from loss, theft, misuse, and unauthorized access.</p>
+          <h2>3. Recipients and Processors</h2>
+          <p>We may use service providers ("processors") that process personal data on our behalf, such as:</p>
+          <ul>
+            <li>Hosting/CDN provider: Vercel (Website hosting and delivery)</li>
+            <li>Email provider: Google Workspace (handling inbound/outbound email)</li>
+          </ul>
+          <p>We disclose personal data to third parties only where:</p>
+          <ul>
+            <li>necessary to provide the Website or respond to you,</li>
+            <li>we are legally required to do so, or</li>
+            <li>you have given consent.</li>
+          </ul>
         </div>
 
         <div class="section">
-          <h2>5. Your Rights</h2>
-          <p>You have the right to access, update, or delete your personal information. Contact us at contact@praetorium.tech for requests.</p>
+          <h2>4. International Data Transfers</h2>
+          <p>If any service provider processes data outside the European Economic Area (EEA), we will ensure appropriate safeguards (for example, EU Standard Contractual Clauses) are in place, as required by Art. 44 et seq. GDPR.</p>
+          <p>Current providers and locations: Vercel (United States) - with EU Standard Contractual Clauses.</p>
         </div>
 
         <div class="section">
-          <h2>6. Contact Us</h2>
-          <p>If you have any questions about this Privacy Policy, please contact us at contact@praetorium.tech</p>
+          <h2>5. Retention</h2>
+          <p><strong>Server logs:</strong> retained for 7 days unless required longer for security investigations.</p>
+          <p><strong>Contact communications:</strong> retained for as long as necessary to handle your request and, if relevant, to manage the business relationship, plus any statutory retention periods.</p>
+        </div>
+
+        <div class="section">
+          <h2>6. Your Rights (GDPR)</h2>
+          <p>Subject to legal requirements and limitations, you have the right to:</p>
+          <ul>
+            <li>access (Art. 15 GDPR)</li>
+            <li>rectification (Art. 16 GDPR)</li>
+            <li>erasure (Art. 17 GDPR)</li>
+            <li>restriction (Art. 18 GDPR)</li>
+            <li>data portability (Art. 20 GDPR)</li>
+            <li>object to processing based on legitimate interests (Art. 21 GDPR)</li>
+            <li>withdraw consent at any time (Art. 7(3) GDPR), where processing is based on consent</li>
+          </ul>
+          <p>To exercise your rights, contact <a href="mailto:contact@praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">contact@praetorium.tech</a>.</p>
+        </div>
+
+        <div class="section">
+          <h2>7. Right to Lodge a Complaint</h2>
+          <p>You also have the right to lodge a complaint with a supervisory authority, in particular in the EU member state of your habitual residence, place of work, or the place of the alleged infringement (Art. 77 GDPR).</p>
+        </div>
+
+        <div class="section">
+          <h2>8. Security</h2>
+          <p>We implement appropriate technical and organizational measures to protect personal data against accidental or unlawful destruction, loss, alteration, unauthorized disclosure, or access.</p>
+        </div>
+
+        <div class="section">
+          <h2>9. Changes to this Privacy Policy</h2>
+          <p>We may update this Privacy Policy from time to time. The "Last updated" date indicates the effective date of the latest version.</p>
+        </div>
+
+        <div class="section">
+          <h2>10. Contact</h2>
+          <p>Questions about this Privacy Policy can be sent to: <a href="mailto:contact@praetorium.tech" style="color: hsl(var(--accent)); text-decoration: none;">contact@praetorium.tech</a>.</p>
         </div>
       </div>
     </main>
 
     <script>
+      // Theme management
+      function getTheme() {
+        return localStorage.getItem('theme') || 'light';
+      }
+
+      function setTheme(theme) {
+        document.documentElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        
+        // Track theme change in GA4
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'theme_change', {
+            event_category: 'preference',
+            event_label: theme,
+            value: theme === 'dark' ? 1 : 0
+          });
+        }
+      }
+
+      function toggleTheme() {
+        const currentTheme = getTheme();
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        setTheme(newTheme);
+      }
+
+      // Initialize theme on page load
+      setTheme(getTheme());
+
       // GA4 tracking functions
       function trackLinkClick(linkName) {
         if (typeof gtag !== 'undefined') {
@@ -236,4 +445,3 @@
     </script>
   </body>
 </html>
-
