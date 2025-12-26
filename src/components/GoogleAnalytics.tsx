@@ -7,10 +7,13 @@ import { getGA4MeasurementId, trackPageView } from '../lib/analytics';
  */
 export function GoogleAnalytics() {
   useEffect(() => {
-    const measurementId = getGA4MeasurementId();
+    // Use the environment variable directly for Vite
+    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID || 'G-KR84C797S0';
+
+    console.log('GA4 Measurement ID:', measurementId);
 
     if (!measurementId) {
-      console.warn('Google Analytics: VITE_GA_MEASUREMENT_ID is not set');
+      console.warn('Google Analytics: Measurement ID not found');
       return;
     }
 
