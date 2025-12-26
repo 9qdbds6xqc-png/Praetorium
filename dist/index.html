@@ -17,10 +17,209 @@
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Praetorium - Coming Soon" />
-    <script type="module" crossorigin src="./assets/index-BiP3PkV-.js"></script>
-    <link rel="stylesheet" crossorigin href="./assets/index-QhRm90kB.css">
+
+    <!-- Google Analytics 4 -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-KR84C797S0"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-KR84C797S0');
+    </script>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+        background: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #334155 100%);
+        color: white;
+        min-height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 20px;
+      }
+
+      .container {
+        text-align: center;
+        max-width: 800px;
+        width: 100%;
+      }
+
+      .logo {
+        font-size: clamp(3rem, 8vw, 6rem);
+        font-weight: 700;
+        margin-bottom: 1rem;
+        background: linear-gradient(45deg, #60a5fa, #a78bfa, #f472b6);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        letter-spacing: -0.02em;
+      }
+
+      .tagline {
+        font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+        font-weight: 300;
+        margin-bottom: 3rem;
+        opacity: 0.9;
+        line-height: 1.4;
+      }
+
+      .coming-soon {
+        font-size: clamp(2.5rem, 6vw, 4rem);
+        font-weight: 600;
+        margin-bottom: 2rem;
+        background: linear-gradient(45deg, #f8fafc, #e2e8f0);
+        background-clip: text;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .description {
+        font-size: clamp(1rem, 2vw, 1.25rem);
+        font-weight: 400;
+        margin-bottom: 3rem;
+        opacity: 0.8;
+        line-height: 1.6;
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+
+      .buttons {
+        display: flex;
+        gap: 1rem;
+        justify-content: center;
+        margin-bottom: 3rem;
+        flex-wrap: wrap;
+      }
+
+      .btn {
+        padding: 12px 24px;
+        border-radius: 8px;
+        font-weight: 500;
+        font-size: 1rem;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        cursor: pointer;
+        border: none;
+        display: inline-block;
+      }
+
+      .btn-primary {
+        background: linear-gradient(45deg, #3b82f6, #1d4ed8);
+        color: white;
+        box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3);
+      }
+
+      .btn-primary:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(59, 130, 246, 0.4);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.1);
+        color: white;
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        backdrop-filter: blur(10px);
+      }
+
+      .btn-secondary:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+      }
+
+      .contact {
+        font-size: 0.9rem;
+        opacity: 0.7;
+        margin-top: 2rem;
+      }
+
+      .contact a {
+        color: #60a5fa;
+        text-decoration: none;
+      }
+
+      .contact a:hover {
+        text-decoration: underline;
+      }
+
+      @media (max-width: 640px) {
+        .buttons {
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .btn {
+          width: 200px;
+        }
+      }
+    </style>
   </head>
   <body>
-    <div id="root"></div>
+    <div class="container">
+      <h1 class="logo">PRAETORIUM</h1>
+
+      <div style="width: 80px; height: 4px; background: linear-gradient(45deg, #60a5fa, #a78bfa); margin: 0 auto 2rem auto; border-radius: 2px;"></div>
+
+      <p class="tagline">Enabling startups and KMUs to access the defence market</p>
+
+      <h2 class="coming-soon">Coming Soon</h2>
+
+      <p class="description">
+        We're building the platform that connects innovative defence technology startups with procurement opportunities. Stay tuned for groundbreaking solutions.
+      </p>
+
+      <div class="buttons">
+        <button class="btn btn-primary" onclick="trackButtonClick('notify_me', 'hero-cta')">Notify Me When We Launch</button>
+        <button class="btn btn-secondary" onclick="trackButtonClick('learn_more', 'secondary-cta')">Learn More</button>
+      </div>
+
+      <div class="contact">
+        <p>For partnership inquiries: <a href="mailto:contact@praetorium.tech">contact@praetorium.tech</a></p>
+      </div>
+    </div>
+
+    <script>
+      // GA4 tracking functions
+      function trackButtonClick(buttonName, buttonId) {
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'button_click', {
+            button_name: buttonName,
+            button_id: buttonId,
+            location: window.location.pathname
+          });
+        }
+      }
+
+      // Track page view on load
+      window.addEventListener('load', function() {
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'page_view', {
+            page_title: document.title,
+            page_location: window.location.href
+          });
+        }
+      });
+
+      // Track scroll engagement
+      let maxScroll = 0;
+      window.addEventListener('scroll', function() {
+        const scrollPercent = Math.round((window.scrollY / (document.body.scrollHeight - window.innerHeight)) * 100);
+        if (scrollPercent > maxScroll && scrollPercent >= 25) {
+          maxScroll = Math.floor(scrollPercent / 25) * 25; // Track at 25%, 50%, 75%, 100%
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'scroll', {
+              percent_scrolled: maxScroll
+            });
+          }
+        }
+      });
+    </script>
   </body>
 </html>
