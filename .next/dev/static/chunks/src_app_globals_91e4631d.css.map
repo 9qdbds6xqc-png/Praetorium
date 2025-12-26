@@ -1,6 +1,0 @@
-{
-  "version": 3,
-  "sources": [],
-  "sections": [
-    {"offset": {"line": 1, "column": 0}, "map": {"version":3,"sources":["file:///Users/davidwulff/Documents/Projects/RepoPrompt/praetorium-website/src/app/globals.css"],"sourcesContent":[":root {\n  color-scheme: light dark;\n  --bg: #ffffff;\n  --fg: #111111;\n  --card: #ffffff;\n  --border: rgba(0, 0, 0, 0.12);\n  --input-bg: #ffffff;\n  --input-fg: #111111;\n}\n\n* {\n  box-sizing: border-box;\n}\n\nhtml,\nbody {\n  padding: 0;\n  margin: 0;\n  font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica,\n    Arial, \"Apple Color Emoji\", \"Segoe UI Emoji\";\n  background: var(--bg);\n  color: var(--fg);\n}\n\na {\n  color: inherit;\n  text-decoration: none;\n}\n\n"],"names":[],"mappings":"AAAA;;;;;;;;;;;;AAAA;EAAA;;;;;;AAUA;;;;AAIA;;;;;;;;AAUA"}}]
-}
