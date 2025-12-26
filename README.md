@@ -1,90 +1,112 @@
 # Praetorium.tech Website
 
-Google Analytics 4 implementation for praetorium.tech.
+A clean Vite + React website with Google Analytics 4 tracking for praetorium.tech.
 
-## Setup
+## 🚀 **Quick Start**
 
-1. **Install dependencies** (if using @next/third-parties - optional):
-
+1. **Clone and install:**
    ```bash
-   npm install @next/third-parties
+   git clone https://github.com/9qdbds6xqc-png/Praetorium.git
+   cd Praetorium
+   npm install
    ```
 
-   Note: The current implementation uses Next.js built-in `Script` component, so this is optional. However, `@next/third-parties` provides additional optimizations.
-
-2. **Configure environment variables**:
-
-   Create a `.env.local` file in the root directory:
-
+2. **Configure GA4:**
+   Create a `.env` file:
    ```
-   NEXT_PUBLIC_GA_MEASUREMENT_ID=G-KR84C797S0
+   VITE_GA_MEASUREMENT_ID=G-KR84C797S0
    ```
 
-   Your GA4 Measurement ID is: **G-KR84C797S0**
+3. **Development:**
+   ```bash
+   npm run dev
+   ```
 
-## Usage
+4. **Build for production:**
+   ```bash
+   npm run build
+   ```
 
-### Automatic Page View Tracking
+## 📊 **Google Analytics 4 Tracking**
 
-Page views are automatically tracked when using the `PageViewTracker` component in your layout (already included).
+### Automatic Tracking
+- ✅ Page views
+- ✅ User engagement (scroll depth, time on page)
+- ✅ User demographics and device info
 
-### Custom Event Tracking
+### Custom Events
+```javascript
+import { trackButtonClick, trackEvent } from './lib/analytics';
 
-Import and use the analytics functions anywhere in your app:
+// Track button clicks
+trackButtonClick('notify_me', 'hero-cta');
 
-```typescript
-import { trackEvent, trackFormSubmission, trackButtonClick } from "@/lib/analytics";
-
-// Track a custom event
-trackEvent("custom_event", {
-  category: "engagement",
-  label: "video_play",
+// Track custom events
+trackEvent('user_interaction', {
+  category: 'engagement',
+  action: 'hover',
+  label: 'feature_card'
 });
-
-// Track form submission
-trackFormSubmission("contact_form", "contact-form-1");
-
-// Track button click
-trackButtonClick("cta_button", "hero-cta", "/home");
 ```
 
-### Available Tracking Functions
+### Available Functions
+- `trackPageView(url)` - Manual page view tracking
+- `trackEvent(name, params)` - Custom events
+- `trackButtonClick(name, id, location)` - Button interactions
+- `trackFormSubmission(name, id)` - Form completions
+- `trackDownload(filename, type)` - File downloads
+- `trackError(message, type)` - Error tracking
+- `trackEngagement(type, value)` - User engagement
 
-- `trackPageView(url)` - Track page views
-- `trackEvent(eventName, eventParams)` - Track custom events
-- `trackFormSubmission(formName, formId?)` - Track form submissions
-- `trackButtonClick(buttonName, buttonId?, location?)` - Track button clicks
-- `trackDownload(fileName, fileType?)` - Track file downloads
-- `trackError(errorMessage, errorType?)` - Track errors
-- `trackEngagement(engagementType, value)` - Track user engagement
-- `trackPurchase(...)` - Track ecommerce purchases
+## 🏗️ **Tech Stack**
 
-## Testing
+- **Vite** - Fast build tool and dev server
+- **React 18** - UI framework
+- **TypeScript** - Type safety
+- **Tailwind CSS** - Utility-first styling
+- **Google Analytics 4** - Analytics and tracking
 
-1. **Development**: Check browser console for warnings if GA4 is not configured
-2. **GA4 DebugView**: Use Google Analytics DebugView to see real-time events
-3. **Production**: Verify events appear in GA4 dashboard after deployment
-
-## Files Structure
+## 📁 **Project Structure**
 
 ```
 src/
-  lib/
-    analytics.ts              # Analytics utility functions
-  components/
-    analytics/
-      GoogleAnalytics.tsx    # GA4 script injection component
-      PageViewTracker.tsx    # Automatic page view tracking
-  hooks/
-    usePageView.ts           # Hook for page view tracking
-  app/
-    layout.tsx               # Root layout with GA4 integration
+├── components/
+│   ├── GoogleAnalytics.tsx    # GA4 script injection
+│   └── ...
+├── lib/
+│   └── analytics.ts           # GA4 utility functions
+├── App.tsx                    # Main app component
+├── main.tsx                   # React entry point
+└── index.css                  # Global styles
+
+public/
+├── CNAME                      # GitHub Pages custom domain
+└── favicon.png               # Site favicon
 ```
 
-## Next Steps
+## 🚀 **Deployment**
 
-1. Set up GA4 property in Google Analytics
-2. Configure GA4 goals and conversions
-3. Set up custom events for key user actions
-4. Monitor analytics data in GA4 dashboard
+This project is configured for **GitHub Pages** deployment:
+
+- **Domain:** www.praetorium.tech
+- **Auto-deploy:** Every push to `main` branch
+- **GA4 Active:** Tracking starts immediately
+
+## 🔧 **Environment Variables**
+
+| Variable | Description | Required |
+|----------|-------------|----------|
+| `VITE_GA_MEASUREMENT_ID` | Your GA4 measurement ID | ✅ |
+
+## 📈 **Analytics Dashboard**
+
+View your analytics data in [Google Analytics](https://analytics.google.com):
+- **Property ID:** G-KR84C797S0
+- **Real-time reports** for immediate data
+- **Audience insights** and user behavior
+- **Conversion tracking** ready to configure
+
+---
+
+**Built for praetorium.tech** 🎯
 
