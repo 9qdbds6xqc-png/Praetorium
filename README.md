@@ -45,19 +45,34 @@ GA4 tracking is automatically configured and active:
 ├── privacy.html            # Privacy Policy page
 ├── terms.html              # Terms of Service page
 ├── vite.config.ts          # Vite build configuration
+├── vercel.json             # Vercel deployment configuration
 ├── public/
-│   ├── CNAME               # GitHub Pages custom domain
 │   └── favicon.png         # Site favicon
 └── dist/                   # Built files (generated)
 ```
 
 ## 🚀 **Deployment**
 
-This project is configured for **GitHub Pages** deployment:
+This project is configured for **Vercel** deployment:
 
-- **Domain:** www.praetorium.tech
-- **Auto-deploy:** Every push to `main` branch via GitHub Actions
+- **Domain:** praetorium.tech (and www.praetorium.tech)
+- **Auto-deploy:** Every push to `main` branch via Vercel
+- **Build Command:** `npm run build`
+- **Output Directory:** `dist`
 - **GA4 Active:** Tracking starts immediately
+
+### Deploying to Vercel
+
+1. **Via Vercel CLI:**
+   ```bash
+   vercel login
+   vercel --prod
+   ```
+
+2. **Via Vercel Dashboard:**
+   - Import your GitHub repository at [vercel.com](https://vercel.com)
+   - Vercel will auto-detect the `vercel.json` configuration
+   - Connect your domain in Vercel project settings
 
 ## 📈 **Analytics Dashboard**
 
