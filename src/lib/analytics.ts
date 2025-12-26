@@ -1,5 +1,5 @@
 /**
- * Google Analytics 4 utility functions
+ * Google Analytics 4 utility functions for Vite + React
  * Provides type-safe event tracking and GA4 initialization
  */
 
@@ -26,20 +26,21 @@ export const isGA4Available = (): boolean => {
  */
 export const getGA4MeasurementId = (): string | null => {
   if (typeof window === "undefined") return null;
-  return process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || null;
+  // For Vite, use import.meta.env instead of process.env
+  return import.meta.env.VITE_GA_MEASUREMENT_ID || null;
 };
 
 /**
  * Track a page view
  */
-export const trackPageView = (url: string): void => {
+export const trackPageView = (url?: string): void => {
   if (!isGA4Available()) return;
 
   const measurementId = getGA4MeasurementId();
   if (!measurementId) return;
 
   window.gtag?.("config", measurementId, {
-    page_path: url,
+    page_path: url || window.location.pathname,
   });
 };
 

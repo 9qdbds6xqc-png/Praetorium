@@ -31,3 +31,219 @@ If you need interactivity, consider converting part of this to a Client Componen
 [00:00:17.276] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
 [00:00:28.894] Browser LOG     Button clicked!
 [00:00:37.438] Server  LOG     ✓ Compiled in 20.1s
+[00:15:30.343] Browser LOG     Button clicked!
+[00:30:56.410] Server  LOG       Reload env: .env
+[00:31:11.632] Server  LOG     ✓ Compiled in 23ms
+[00:31:39.847] Server  ERROR   ⨯ ./src/app/layout.tsx:2:1
+Module not found: Can't resolve '@/components/analytics/GoogleAnalytics'
+  1 | import type { Metadata } from "next";
+> 2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+  4 | import "./globals.css";
+  5 |
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.848] Server  ERROR   ⨯ ./src/app/layout.tsx:2:1
+Module not found: Can't resolve '@/components/analytics/GoogleAnalytics'
+  1 | import type { Metadata } from "next";
+> 2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+  4 | import "./globals.css";
+  5 |
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.848] Server  ERROR   ⨯ ./src/app/layout.tsx:3:1
+Module not found: Can't resolve '@/components/analytics/PageViewTracker'
+  1 | import type { Metadata } from "next";
+  2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+> 3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import "./globals.css";
+  5 |
+  6 | export const metadata: Metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.849] Server  ERROR   ⨯ ./src/app/layout.tsx:3:1
+Module not found: Can't resolve '@/components/analytics/PageViewTracker'
+  1 | import type { Metadata } from "next";
+  2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+> 3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import "./globals.css";
+  5 |
+  6 | export const metadata: Metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.850] Server  ERROR   ⨯ ./src/app/layout.tsx:2:1
+Module not found: Can't resolve '@/components/analytics/GoogleAnalytics'
+  1 | import type { Metadata } from "next";
+> 2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+  4 | import "./globals.css";
+  5 |
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.851] Server  ERROR   ⨯ ./src/app/layout.tsx:2:1
+Module not found: Can't resolve '@/components/analytics/GoogleAnalytics'
+  1 | import type { Metadata } from "next";
+> 2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+  4 | import "./globals.css";
+  5 |
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.851] Server  ERROR   ⨯ ./src/app/layout.tsx:3:1
+Module not found: Can't resolve '@/components/analytics/PageViewTracker'
+  1 | import type { Metadata } from "next";
+  2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+> 3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import "./globals.css";
+  5 |
+  6 | export const metadata: Metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.852] Server  ERROR   ⨯ ./src/app/layout.tsx:3:1
+Module not found: Can't resolve '@/components/analytics/PageViewTracker'
+  1 | import type { Metadata } from "next";
+  2 | import { GoogleAnalytics } from "@/components/analytics/GoogleAnalytics";
+> 3 | import { PageViewTracker } from "@/components/analytics/PageViewTracker";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 | import "./globals.css";
+  5 |
+  6 | export const metadata: Metadata = {
+
+
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.853] Server  ERROR   ⨯ ./src/app/page.tsx:3:1
+Module not found: Can't resolve '@/lib/analytics'
+  1 | "use client";
+  2 |
+> 3 | import { trackButtonClick } from "@/lib/analytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function Home() {
+  6 |   return (
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.853] Server  ERROR   ⨯ ./src/app/page.tsx:3:1
+Module not found: Can't resolve '@/lib/analytics'
+  1 | "use client";
+  2 |
+> 3 | import { trackButtonClick } from "@/lib/analytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function Home() {
+  6 |   return (
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.854] Server  ERROR   ⨯ ./src/app/page.tsx:3:1
+Module not found: Can't resolve '@/lib/analytics'
+  1 | "use client";
+  2 |
+> 3 | import { trackButtonClick } from "@/lib/analytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function Home() {
+  6 |   return (
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:39.854] Server  ERROR   ⨯ ./src/app/page.tsx:3:1
+Module not found: Can't resolve '@/lib/analytics'
+  1 | "use client";
+  2 |
+> 3 | import { trackButtonClick } from "@/lib/analytics";
+    | ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  4 |
+  5 | export default function Home() {
+  6 |   return (
+
+
+
+Import traces:
+  Client Component Browser:
+    ./src/app/page.tsx [Client Component Browser]
+    ./src/app/page.tsx [Server Component]
+
+  Client Component SSR:
+    ./src/app/page.tsx [Client Component SSR]
+    ./src/app/page.tsx [Server Component]
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+[00:31:54.901] Server  LOG     ✓ Compiled in 502ms
