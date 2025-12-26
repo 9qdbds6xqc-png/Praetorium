@@ -32,8 +32,6 @@ jobs:
 
       - name: Build
         run: npm run build
-        env:
-          VITE_GA_MEASUREMENT_ID: G-KR84C797S0
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
