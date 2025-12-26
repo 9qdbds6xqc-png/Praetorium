@@ -1,0 +1,33 @@
+[00:00:00.843] Server  LOG     ✓ Ready in 617ms
+[00:00:03.042] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:03.547] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:04.596] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:08.676] Server  ERROR   ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+[00:00:09.073] Server  ERROR   ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+[00:00:09.408] Server  ERROR   ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+[00:00:09.871] Server  ERROR   ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+[00:00:10.161] Server  ERROR   ⨯ Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+[00:00:10.383] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:10.383] Browser ERROR   uncaughtError: Error: Event handlers cannot be passed to Client Component props.
+  <button onClick={function onClick} style=... children=...>
+                  ^^^^^^^^^^^^^^^^^^
+If you need interactivity, consider converting part of this to a Client Component.
+[00:00:16.278] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:17.276] Browser INFO    %cDownload the React DevTools for a better development experience: https://react.dev/link/react-devtools font-weight:bold
+[00:00:28.894] Browser LOG     Button clicked!
+[00:00:37.438] Server  LOG     ✓ Compiled in 20.1s
