@@ -4,6 +4,10 @@
   "framework": null,
   "rewrites": [
     {
+      "source": "/(.*\\.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf|eot))",
+      "destination": "/$1"
+    },
+    {
       "source": "/privacy",
       "destination": "/privacy.html"
     },
@@ -14,6 +18,10 @@
     {
       "source": "/impressum",
       "destination": "/impressum.html"
+    },
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ]
 }
