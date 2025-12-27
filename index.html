@@ -208,11 +208,27 @@
       .footer-links a {
         color: hsl(var(--muted-foreground));
         text-decoration: none;
+        position: relative;
         transition: color 0.3s ease;
       }
 
       .footer-links a:hover {
         color: hsl(var(--foreground));
+      }
+
+      .footer-links a::after {
+        content: '';
+        position: absolute;
+        bottom: -4px;
+        left: 0;
+        height: 1px;
+        width: 0;
+        background: hsl(var(--accent));
+        transition: width 0.3s ease;
+      }
+
+      .footer-links a:hover::after {
+        width: 100%;
       }
 
       .footer-copyright {
@@ -391,14 +407,6 @@
 
         <h1>Praetorium</h1>
       </div>
-
-      <a
-        href="mailto:contact@praetorium.tech"
-        class="contact-link"
-        onclick="trackContactClick()"
-      >
-        contact@praetorium.tech
-      </a>
     </main>
 
     <footer>
@@ -407,17 +415,24 @@
         <span>•</span>
         <a href="/terms" onclick="trackLinkClick('terms')">Terms of Service</a>
         <span>•</span>
-        <a href="/impressum" onclick="trackLinkClick('impressum')">Impressum</a>
+        <a href="/impressum" onclick="trackLinkClick('impressum')">Imprint</a>
       </div>
+      <a
+        href="mailto:contact@praetorium.tech"
+        class="contact-link"
+        onclick="trackContactClick()"
+      >
+        contact@praetorium.tech
+      </a>
       <p class="footer-copyright">
-        Copyright © 2026 PRAETORIUM. All rights reserved.
+        Copyright © 2026 Praetorium Advisory. All rights reserved.
       </p>
     </footer>
 
     <script>
       // Theme management
       function getTheme() {
-        return localStorage.getItem('theme') || 'light';
+        return localStorage.getItem('theme') || 'dark';
       }
 
       function setTheme(theme) {
