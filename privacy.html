@@ -132,24 +132,24 @@
 
       .theme-toggle .sun-icon {
         position: absolute;
-        opacity: 1;
-        transform: rotate(0deg) scale(1);
+        opacity: 0;
+        transform: rotate(90deg) scale(0);
       }
 
       .theme-toggle .moon-icon {
         position: absolute;
-        opacity: 0;
-        transform: rotate(90deg) scale(0);
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
       }
 
       :root[data-theme="dark"] .theme-toggle .sun-icon {
-        opacity: 0;
-        transform: rotate(90deg) scale(0);
+        opacity: 1;
+        transform: rotate(0deg) scale(1);
       }
 
       :root[data-theme="dark"] .theme-toggle .moon-icon {
-        opacity: 1;
-        transform: rotate(0deg) scale(1);
+        opacity: 0;
+        transform: rotate(90deg) scale(0);
       }
 
       main {
